@@ -1,0 +1,143 @@
+    1  ls
+    2  mkdir cardano-day1
+    3  cd cardano-day1
+    4  curl --proto '=https' --tlsv1.2 -LsSf https://install.aiken-lang.org | sh
+    5  source ~/.bashrc
+    6  aikup --version
+    7  aikup
+    8  aiken --version
+    9  find $HOME -type f -name aikup 2>/dev/null
+   10  echo $PATH
+   11  aiken --version
+   12  aiken new david/cardano-day1
+   13  cd cardano-day1/
+   14  vi validators/hello.ak
+   15  aiken check
+   16  aiken build
+   17  ls -lh plutus. json
+   18  ls
+   19  cd validators/
+   20  ls
+   21  cd ..
+   22  ls
+   23  cd build
+   24  ls
+   25  cd ..
+   26  ls
+   27  cd validators/
+   28  ls
+   29  cd ..
+   30  ls
+   31  ls -l plutus.json
+   32  cat plutus.json
+   33  ls
+   34  sudo apt-get update
+   35  sudo apt-get install -y ca-certificates curl gnupg
+   36  sudo mkdir -p /etc/apt/keyrings
+   37  curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+   38  NODE_MAJOR=22
+   39  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+   40  sudo apt-get install nodejs -y
+   41  sudo apt install npm
+   42  npm --version
+   43  npm install @meshsdk/core
+   44  npm pkg set type=module
+   45  curl https://preprod.koios.rest/api/v1/tip
+   46  vi create-wallet.js
+   47  npm list @meshsdk/core
+   48  aiken --version
+   49  node --version
+   50  npm init -y
+   51  npm pkg set type=module
+   52  npm install @meshsdk/core @meshsdk/wallet
+   53  npm list @meshsdk/core
+   54  npm list @meshsdk/wallet
+   55  curl https://preprod.koios.rest/api/v1/tip
+   56  vi wallet.js
+   57  ls
+   58  chmod 600 wallet.mnemonic 2>/dev/null
+   59  echo "wallet.mnemonic" >> .gitignore
+   60  node wallet.js
+   61  history
+   62  node wallet.js
+   63  vi contract.js
+   64  node contract.js
+   65  vi init.js
+   66  node init.js
+   67  vi init.js
+   68  node init.js "Hello World"
+   69  ls
+   70  cp contract.js contract.old
+   71  vi contract.js
+   72  node contract.sj
+   73  node contract.js
+   74  node init.js "Hello World"
+   75  vi get.js
+   76  node get.js
+   77  node -e "
+import('./wallet.js').then(async m => {
+ const w=await m.getWallet();
+ console.log(await w.getCollateral());
+})
+"
+   78  vi set.js
+   79  node  set.js
+   80  node  set.js "new message"
+   81  curl -s https://preprod.koios.rest/api/v1/cli_protocol_params   | jq '.[0].costModels | map_values(length)'
+   82  curl -s https://preprod.koios.rest/api/v1/cli_protocol_params  | jq '.costModels | map_values(length)'
+   83  node -e "
+import { KoiosProvider } from '@meshsdk/core';
+
+const p = new KoiosProvider('preprod');
+const x = await p.fetchProtocolParameters();
+
+console.log('costModels:', x.costModels);
+console.log('keys:', Object.keys(x));
+"
+   84  npm list @meshsdk/core
+   85  npm view @meshsdk/core version
+   86  npm install @lucid-evolution/lucid
+   87  npm list @lucid-evolution/lucid
+   88  vi lucid.js
+   89  vi lucid-wallet.js
+   90  node lucid-wallet.js
+   91  cp contract.js contract.old
+   92  vi contract.js
+   93  vi show-contract.js
+   94  node show-contract.js
+   95  ls
+   96  cp contract.js  contract.old
+   97  vi contract.js
+   98  node show-contract.js
+   99  node get.js
+  100  vi get.js
+  101  cp get.js get.old
+  102  vi get.js
+  103  node get.js
+  104  node  set.js "new message"
+  105  node  set.js "new messages"
+  106  cp set.js  set.old2
+  107  vi set.js
+  108  node  set.js "new messages"
+  109  node get.js
+  110  cp get.works
+  111  cp get.js get.works
+  112  vi get.js
+  113  node get.js
+  114  node  set.js "my new cardona hello "
+  115  node get.js
+  116  history > hist.dat
+  117  cat hist.dat
+  118  echo "# CardanoDayOneEquivalentExample" >> README.md
+  119  git init
+  120  git add README.md
+  121  git add -A
+  122  git commit -m "first commit"
+  123  git branch -M main
+  124  git remote add origin https://davidalfredostrowski:com/davidalfredostrowski/CardanoDayOneEquivalentExample.git
+  125  git push -u origin main
+  126  ls
+  127  vi hist.dat 
+  128  vi hist.dat
+  129  history
+  130  history > h2.dat
