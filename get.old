@@ -1,0 +1,76 @@
+import {
+  deserializeDatum
+} from "@meshsdk/core";
+
+import {
+  provider
+} from "./wallet.js";
+
+import {
+  scriptAddress
+} from "./contract.js";
+
+
+const utxos =
+  await provider.fetchAddressUTxOs(
+    scriptAddress
+  );
+
+
+if (utxos.length === 0) {
+
+  console.log(
+    "No state UTXO found."
+  );
+
+  process.exit(0);
+}
+
+
+console.log(
+  `Found ${utxos.length} UTXO(s) at script address.`
+);
+
+
+// For this Day-1 exercise we expect one
+// authoritative state UTXO.
+const stateUtxo =
+  utxos[0];
+
+
+if (!stateUtxo.output.plutusData) {
+
+  throw new Error(
+    "UTXO does not contain an inline datum."
+  );
+}
+
+
+const datum =
+  deserializeDatum(
+    stateUtxo.output.plutusData
+  );
+
+
+console.log(
+  "\nRaw datum:",
+  datum
+);
+
+
+// Our Datum has:
+//
+// constructor 0
+// field 0 = message bytes
+//
+// Mesh's deserialized representation can vary slightly,
+// so display the original UTXO as well while we're learning.
+
+console.log(
+  "\nComplete state UTXO:"
+);
+
+console.dir(
+  stateUtxo,
+  { depth: null }
+);

@@ -1,0 +1,229 @@
+import {
+  MeshTxBuilder,
+  mConStr0
+} from "@meshsdk/core";
+
+import {
+  getWallet,
+  provider
+} from "./wallet.js";
+
+import {
+  script,
+  scriptAddress
+} from "./contract.js";
+
+
+const newMessage =
+  process.argv[2];
+
+
+if (!newMessage) {
+
+  console.log(
+    'Usage: node set.js "New message"'
+  );
+
+  process.exit(1);
+}
+
+
+const wallet =
+  await getWallet();
+
+
+const walletAddress =
+  await wallet.getChangeAddress();
+
+
+const walletUtxos =
+  await wallet.getUtxos();
+
+
+const collateral =
+  await wallet.getCollateral();
+
+
+if (!collateral.length) {
+
+  throw new Error(
+    "No collateral UTXO available. Run wallet.createCollateral() first."
+  );
+}
+
+
+// ------------------------------------------------
+// 1. Find current contract state
+// ------------------------------------------------
+
+const stateUtxos =
+  await provider.fetchAddressUTxOs(
+    scriptAddress
+  );
+
+
+if (!stateUtxos.length) {
+
+  throw new Error(
+    "No state UTXO found. Run init.js first."
+  );
+}
+
+
+// Day-1 simplification:
+// assume first script UTXO is our state.
+const oldState =
+  stateUtxos[0];
+
+
+// ------------------------------------------------
+// 2. Construct new value
+// ------------------------------------------------
+
+const newMessageHex =
+  Buffer
+    .from(
+      newMessage,
+      "utf8"
+    )
+    .toString("hex");
+
+
+// Redeemer {
+//
+//     new_message: ByteArray
+//
+// }
+//
+// Meaning:
+//
+// "Please SET storedData to this value."
+//
+const redeemer =
+  mConStr0([
+    newMessageHex
+  ]);
+
+
+// New Datum {
+//
+//     message: ByteArray
+//
+// }
+//
+// Meaning:
+//
+// "The current stored value is now this."
+//
+const newDatum =
+  mConStr0([
+    newMessageHex
+  ]);
+
+
+// ------------------------------------------------
+// 3. Build state transition
+// ------------------------------------------------
+
+const txBuilder =
+  new MeshTxBuilder({
+    fetcher: provider,
+    verbose: true
+  });
+
+
+const unsignedTx =
+  await txBuilder
+
+    // We are executing a Plutus V3 validator.
+    .spendingPlutusScriptV3()
+
+    // Consume OLD state.
+    .txIn(
+      oldState.input.txHash,
+      oldState.input.outputIndex,
+      oldState.output.amount,
+      oldState.output.address
+    )
+
+    // Old UTXO contains inline datum.
+    .txInInlineDatumPresent()
+
+    // Function-call-like information.
+    .txInRedeemerValue(
+      redeemer
+    )
+
+    // Supply compiled Aiken validator.
+    .txInScript(
+      script.code
+    )
+
+    // ------------------------------------------------
+    // Create NEW state UTXO
+    // ------------------------------------------------
+
+    .txOut(
+      scriptAddress,
+      oldState.output.amount
+    )
+
+    .txOutInlineDatumValue(
+      newDatum
+    )
+
+    // ------------------------------------------------
+    // Required Cardano collateral
+    // ------------------------------------------------
+
+    .txInCollateral(
+      collateral[0].input.txHash,
+      collateral[0].input.outputIndex,
+      collateral[0].output.amount,
+      collateral[0].output.address
+    )
+
+    // Wallet pays transaction fees.
+    .changeAddress(
+      walletAddress
+    )
+
+    .selectUtxosFrom(
+      walletUtxos
+    )
+
+    .complete();
+
+
+// ------------------------------------------------
+// 4. Sign locally
+// ------------------------------------------------
+
+const signedTx =
+  await wallet.signTx(
+    unsignedTx,
+    true
+  );
+
+
+// ------------------------------------------------
+// 5. Submit through Koios
+// ------------------------------------------------
+
+const txHash =
+  await provider.submitTx(
+    signedTx
+  );
+
+
+console.log(
+  `\nSET "${newMessage}"`
+);
+
+console.log(
+  "\nTransaction:"
+);
+
+console.log(
+  txHash
+);

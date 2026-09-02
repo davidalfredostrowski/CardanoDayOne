@@ -1,0 +1,75 @@
+import {
+  Data
+} from "@lucid-evolution/lucid";
+
+import {
+  getLucid
+} from "./lucid.js";
+
+import {
+  getScriptAddress
+} from "./contract.js";
+
+
+const lucid =
+  await getLucid();
+
+const scriptAddress =
+  getScriptAddress();
+
+
+const utxos =
+  await lucid.utxosAt(
+    scriptAddress
+  );
+
+
+if (utxos.length === 0) {
+  console.log(
+    "No state UTXO found."
+  );
+
+  process.exit(0);
+}
+
+
+console.log(
+  `Found ${utxos.length} script UTXO(s)`
+);
+
+
+const stateUtxo =
+  utxos[0];
+
+
+if (!stateUtxo.datum) {
+  throw new Error(
+    "State UTXO has no inline datum."
+  );
+}
+
+
+const datum =
+  Data.from(
+    stateUtxo.datum
+  );
+
+
+console.log(
+  "\nRaw datum:"
+);
+
+console.dir(
+  datum,
+  { depth: null }
+);
+
+
+console.log(
+  "\nState UTXO:"
+);
+
+console.dir(
+  stateUtxo,
+  { depth: null }
+);
