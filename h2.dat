@@ -58,6 +58,46 @@
    58  chmod 600 wallet.mnemonic 2>/dev/null
    59  echo "wallet.mnemonic" >> .gitignore
    60  node wallet.js
+#########################################
+1. node wallet.js
+       ↓
+   Displays your wallet address
+   addr_test1q...
+
+2. Send faucet tADA to THAT wallet address
+       ↓
+   Wait for confirmation
+
+3. Verify wallet has funds
+
+4. node init.js "hello world"
+       ↓
+   Takes 3 tADA from wallet
+   and creates the state UTXO
+
+5. node get.js
+
+6. node set.js "new message"
+
+7. node get.js
+#########################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    61  history
    62  node wallet.js
    63  vi contract.js
