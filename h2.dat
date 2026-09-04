@@ -14,19 +14,8 @@
    14  vi validators/hello.ak
    15  aiken check
    16  aiken build
-   17  ls -lh plutus. json
-   18  ls
-   19  cd validators/
-   20  ls
-   21  cd ..
-   22  ls
-   23  cd build
-   24  ls
-   25  cd ..
-   26  ls
-   27  cd validators/
-   28  ls
-   29  cd ..
+   17  ls -lh plutus.json
+   
    30  ls
    31  ls -l plutus.json
    32  cat plutus.json
