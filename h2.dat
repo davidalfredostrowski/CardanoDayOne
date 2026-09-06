@@ -41,6 +41,10 @@
    52  npm install @meshsdk/core @meshsdk/wallet
    53  npm list @meshsdk/core
    54  npm list @meshsdk/wallet
+npm install @lucid-evolution/lucid
+
+
+
    55  curl https://preprod.koios.rest/api/v1/tip
    56  vi wallet.js
    57  ls
