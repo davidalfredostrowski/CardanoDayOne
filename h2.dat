@@ -76,23 +76,22 @@ npm install @lucid-evolution/lucid
 #########################################
 
 
+#### note: wallet.js needs to be replaced by lucid.js
+ubuntu@ip-172-31-9-73:~/cardano-day1$ vi wallet.js
+ubuntu@ip-172-31-9-73:~/cardano-day1$ vi balance.js
+ubuntu@ip-172-31-9-73:~/cardano-day1$ node balance.js
+Network: Mainnet
+Wallet address:
+addr1q96m82vqnuh0pssgw4cgwwqw6e6vuze5uuaz8ufr2yzslhrseeuayz89mvncjyr0qc3pj747ynfwzpnrq5ahrwg57rvqdfvtzt
+
+UTXO count: 0
+
+Balance: 0 ADA
+ubuntu@ip-172-31-9-73:~/cardano-day1$
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-   61  history
-   62  node wallet.js
+##   61  history
+###   62  node wallet.js
    63  vi contract.js
    64  node contract.js
    65  vi init.js
